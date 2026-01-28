@@ -1,0 +1,65 @@
+model:
+  class_path: cvdseg.lightning_modules.ensemble.Ensemble
+  init_args:
+    seedless_log_paths:
+    - logs/WMH_ISL3/WMH_no_extra
+    - logs/WMH_ISL3/ISL_no_extra
+    activation: sigmoid
+    test_post_processor:
+      class_path: cvdseg.post_processing.basic.MultilabelPostProcessor
+      init_args:
+        threshold: 0.5
+        already_activated: true
+    seeds:
+    - 1
+    - 2
+    - 3
+    config: null
+    ckpt_type: best
+    test_metrics_path: results/WMH_ISL3/WMH_ISL_no_extra_mp.json
+    test_pred_dir: null
+    calculate_ece: false
+    temp_scaling: null
+data:
+  class_path: cvdseg.data_modules.base.Base
+  init_args:
+    data_dir: data/main
+    train_split_path: null
+    val_split_path: data/main/splits3/val_main.csv
+    test_split_path: data/main/splits3/test_main.csv
+    images:
+    - FLAIR
+    labels:
+    - WMH
+    - ISLtotal
+    transforms_train: null
+    transforms_test:
+      class_path: torchio.transforms.Compose
+      init_args:
+        transforms:
+        - class_path: cvdseg.data_modules.transforms.CopyAnyAffine
+        - class_path: torchio.transforms.ZNormalization
+    val_as_test: false
+    sampler:
+      class_path: torchio.data.LabelSampler
+      init_args:
+        patch_size:
+        - 1
+        - 1
+        - 1
+        label_probabilities:
+          0: 0.01
+          1: 0.99
+    queue_max_length: 400
+    queue_samples_per_volume: 1
+    queue_num_workers: 8
+    batch_size: 1
+    missing_labels_ok: true
+trainer:
+  logger: false
+  enable_checkpointing: false
+  callbacks: null
+  accelerator: gpu
+  devices:
+  - 0
+  inference_mode: false

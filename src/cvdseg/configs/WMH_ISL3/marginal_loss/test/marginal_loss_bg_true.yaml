@@ -1,0 +1,33 @@
+model:
+  class_path: cvdseg.lightning_modules.ensemble.Ensemble
+  init_args:
+    seedless_log_paths: [logs/WMH_ISL3/marginal_loss_bg_true]
+    activation: softmax
+    test_post_processor: 
+      class_path: cvdseg.post_processing.basic.MulticlassPostProcessor
+    seeds: [1, 2, 3]
+    config: null
+    ckpt_type: best
+    test_metrics_path: results/WMH_ISL3/marginal_loss_bg_true.json
+    test_pred_dir: results/WMH_ISL3/marginal_loss_bg_true
+data:
+  class_path: cvdseg.data_modules.base.Base
+  init_args:
+    data_dir: data/main
+    train_split_path: null # data/main/splits3/train_multiclass.csv
+    val_split_path: null # data/main/splits3/val_main.csv
+    test_split_path: data/main/splits3/test_main.csv
+    images: [FLAIR]
+    labels: [WMH, ISLtotal]
+    transforms_train: null
+    transforms_test:
+      class_path: torchio.transforms.ZNormalization
+    sampler: null
+    val_as_test: False
+    missing_labels_ok: true
+trainer:
+  logger: false 
+  enable_checkpointing: false
+  callbacks: null
+  accelerator: gpu
+  devices: [0]

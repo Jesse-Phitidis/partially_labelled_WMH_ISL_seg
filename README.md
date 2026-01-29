@@ -5,4 +5,4 @@ https://github.com/Jesse-Phitidis/WMH_ISL_SEG
 
 Please cite:
 
-*coming soon...*
+Phitidis, J., Smithard, A. Q., Whiteley, W. N., Wardlaw, J. M., Bernabeu, M. O., & Valdés Hernández, M. (2026). Comparative evaluation of training strategies using partially labelled datasets for segmentation of white matter hyperintensities and stroke lesions in FLAIR MRI. arXiv. https://arxiv.org/abs/2601.20503
